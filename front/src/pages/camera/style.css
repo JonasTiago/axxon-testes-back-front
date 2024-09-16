@@ -1,0 +1,48 @@
+.camera-detail {
+    padding: 1rem;
+    width: 60%;
+    max-width: 75vw;
+    margin: 0 auto;
+    display: flex;
+    justify-self: space-around;
+  }
+  
+  .camera-stream {
+    margin-bottom: 30px;
+    width: 1200px;
+    height: 720px;
+  }
+  
+  .camera-events {
+    margin-top: 20px;
+  }
+  
+  .camera-events ul {
+    list-style-type: none;
+    padding: 0;
+    
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    flex-direction: row;
+    width: 100%;
+  }
+  
+  .camera-events li {
+    background-color: #f4f4f4;
+    padding: 10px;
+    margin-bottom: 8px;
+    border-radius: 4px;
+    border-left: 5px solid #007bff;
+    font-size: 14px;
+
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .camera-events li strong {
+    font-weight: bold;
+  }
+  
