@@ -1,9 +1,9 @@
 import { archiveEventsService } from "../services/archiveEventsService.js";
 
-async function listEvents(req, res) {
+async function listContents(req, res) {
   const { videoSourceid } = req.query;
   try {
-    const servers = await archiveEventsService.listEvents(videoSourceid);
+    const servers = await archiveEventsService.listContents(videoSourceid);
     res.status(200).send(servers);
   } catch (err) {
     res.status(500).send(err.message);
@@ -64,4 +64,56 @@ async function stopStream(req, res) {
   }
 }
 
-export { listEvents, archiveStream, stopStream };
+async function listFramesByVideo(req, res) {
+  const { videoSourceid } = req.query;
+  const { endtime, begintime } = req.params;
+
+  console.log("videoSourceid", videoSourceid);
+  console.log("endtime", endtime);
+  console.log("begintime", begintime);
+
+  try {
+    const frames = await archiveEventsService.listFramesByVideo(
+      videoSourceid,
+      endtime,
+      begintime
+    );
+
+    res.status(200).send(frames);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+}
+
+async function getFrame(req, res) {
+  const { videoSourceid } = req.query;
+  const { starttime } = req.params;
+  try {
+    const frame = await archiveEventsService.getFrame(videoSourceid, starttime);
+    res.set("Content-Type", "image/jpeg");
+    res.set("Content-Disposition", 'inline; filename="snapshot.jpg"');
+
+    res.send(frame);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+}
+
+async function listEvents(req, res) {
+  const { videoSourceid } = req.query;
+  try {
+    const servers = await archiveEventsService.listEvents(videoSourceid);
+    res.status(200).send(servers);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+}
+
+export {
+  listEvents,
+  archiveStream,
+  stopStream,
+  listFramesByVideo,
+  getFrame,
+  listContents,
+};

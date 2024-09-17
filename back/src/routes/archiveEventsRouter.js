@@ -3,14 +3,18 @@ import {
   listEvents,
   archiveStream,
   stopStream,
+  listFramesByVideo,
+  getFrame,
+  listContents,
 } from "../controllers/archiveEventsController.js";
 
 const archiveEventsRoutes = new Router();
 
-archiveEventsRoutes.get("/", listEvents);
+archiveEventsRoutes.get("/", listContents);
+archiveEventsRoutes.get("/detectors", listEvents);
 archiveEventsRoutes.get("/:starttime", archiveStream);
 archiveEventsRoutes.get("/stop/:uuid", stopStream);
-// archiveEventsRoutes.get("/:host", inforServer);
-// archiveEventsRoutes.get("/video-origins", listCamerasVideoOrigens);
+archiveEventsRoutes.get("/frames/:endtime/:begintime", listFramesByVideo);
+archiveEventsRoutes.get("/frame/:starttime", getFrame);
 
 export default archiveEventsRoutes;

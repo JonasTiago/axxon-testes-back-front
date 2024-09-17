@@ -1,6 +1,6 @@
 import api from "../api/api.js";
 
-async function listEvents(videoSourceid) {
+async function listContents(videoSourceid) {
   try {
     const response = await api.get(
       `/archive/contents/intervals/${videoSourceid}/future/past`
@@ -77,9 +77,64 @@ async function archiveStopStream(uuid, videoSourceid) {
   }
 }
 
+async function listFramesByVideo(videoSourceid, endtime, begintime) {
+  try {
+    const frames = await api.get(
+      `/archive/contents/frames/${videoSourceid}/${endtime}/${begintime}`
+    );
+
+    if (!frames.data) {
+      throw { message: "frames not found", code: 404 };
+    }
+    return frames.data;
+  } catch (error) {
+    console.error("Error uuid:", error);
+    throw error;
+  }
+}
+
+async function getFrame(videoSourceid, starttime) {
+  try {
+    const frame = await api.get(
+      `/archive/media/${videoSourceid}/${starttime}`,
+      {
+        responseType: "arraybuffer",
+      }
+    );
+
+    if (!frame) {
+      throw { message: "stream not found", code: 404 };
+    }
+    return frame.data;
+  } catch (error) {
+    console.error("Error uuid:", error);
+    throw error;
+  }
+}
+
+async function listEvents(videoSourceid) {
+  try {
+    const response = await api.get(
+      `/archive/events/detectors/${videoSourceid}`
+    );
+
+    if (!response.data) {
+      throw { message: "Events not found", code: 404 };
+    }
+
+    return response.data;
+  } catch (error) {
+    console.error("Error listing Events:", error);
+    throw error;
+  }
+}
+
 export const archiveEventsService = {
+  listFramesByVideo,
+  listContents,
   listEvents,
   archiveStream,
   getUuid,
   archiveStopStream,
+  getFrame,
 };
